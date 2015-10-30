@@ -1,0 +1,17 @@
+ac-comphist.dat
+auto-save-list/
+backups/
+bookmarks
+elpa/
+ensime/
+eshell/
+geben/
+ido.last
+*~
+projectile-bookmarks.eld
+projectile.cache
+recentf
+smex-items
+tramp
+vendor/
+
