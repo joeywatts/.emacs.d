@@ -38,7 +38,6 @@
 (setq-default cursor-type 'bar) ;; set cursor to bar
 (setq mac-option-modifier 'super) ;; set option to super
 (setq mac-command-modifier 'meta) ;; set command to meta
-;; (add-to-list 'default-frame-alist '(fullscreen . maximized)) ;; maximize window on startup
 
 ;; Keybindings for resizing windows.
 (global-set-key (kbd "C-s-<down>") 'enlarge-window)
@@ -46,7 +45,10 @@
 (global-set-key (kbd "C-s-<left>") 'enlarge-window-horizontally)
 (global-set-key (kbd "C-s-<right>") 'shrink-window-horizontally)
 
+;; Add /usr/local/bin to exec-path
 (setq exec-path (append exec-path '("/usr/local/bin")))
+
+;; Add LaTeX to exec-path
 (setq exec-path (append exec-path '("/usr/texbin")))
 
 ;; Shift+arrow_keys to move cursor around split panes
@@ -56,8 +58,8 @@
 (setq windmove-wrap-around t)
 
 ;; Fix tabs
-(setq-default indent-tabs-mode t)
-(setq-default tab-width 4)
+(setq-default indent-tabs-mode t
+			  tab-width 4)
 
 ;; Save/restore window frame (position/size)
 (desktop-save-mode)
@@ -75,21 +77,6 @@
 
 ;; Tramp default method to ssh.
 (setq tramp-default-method "ssh")
-
-;; Refresh major mode. (sometimes php syntax highlighting screws up)
-(defun refresh-major-mode ()
-  "Sets the current buffer's major mode to fundamental mode, then
-resets your previous major mode."
-  (interactive)
-  (let ((mode (buffer-local-value 'major-mode (current-buffer))))
-	(funcall 'fundamental-mode)
-	(funcall mode)))
-
-;; Reload current file.
-(defun reload-current-file ()
-  "Reverts the current buffer, asking for confirmation only if it is modified"
-  (interactive)
-  (revert-buffer t (not (buffer-modified-p)) t))
 
 ;;------------------------------------------------------------------
 (custom-set-variables
@@ -128,26 +115,6 @@ resets your previous major mode."
   :config
   (projectile-global-mode)
   :init)
-
-;; ;; Turn on helm.
-;; (use-package helm
-;;   :ensure
-;;   :config
-;;   (require 'helm-config)
-;;   (helm-mode 1))
-
-;; ;; Helm-cmd-t
-;; (use-package helm-cmd-t
-;;   :ensure
-;;   :bind
-;;   ("M-t" . helm-cmd-t))
-
-;; ;; Helm projectile bindings
-;; (use-package helm-projectile
-;;   :ensure
-;;   :config
-;;   (helm-projectile-on)
-;;   :init)
 
 ;; Turn on ido and smex
 (ido-mode 1)
@@ -257,9 +224,11 @@ resets your previous major mode."
        (define-key git-gutter+-mode-map (kbd "C-x C-y") 'git-gutter+-stage-and-commit-whole-buffer)
        (define-key git-gutter+-mode-map (kbd "C-x U") 'git-gutter+-unstage-whole-buffer))))
 
+;; Dired+
 (use-package dired+
   :ensure)
 
+;; Popwin
 (use-package popwin
   :ensure
   :config
@@ -288,5 +257,20 @@ resets your previous major mode."
     (indent-according-to-mode)))
 (global-set-key [S-return] 'open-next-line)
 (global-set-key [C-S-return] 'open-previous-line)
+
+;; Refresh major mode. (sometimes php syntax highlighting screws up)
+(defun refresh-major-mode ()
+  "Sets the current buffer's major mode to fundamental mode, then
+resets your previous major mode."
+  (interactive)
+  (let ((mode (buffer-local-value 'major-mode (current-buffer))))
+	(funcall 'fundamental-mode)
+	(funcall mode)))
+
+;; Reload current file.
+(defun reload-current-file ()
+  "Reverts the current buffer, asking for confirmation only if it is modified"
+  (interactive)
+  (revert-buffer t (not (buffer-modified-p)) t))
 
 ;;------------------------------------------------------------------
