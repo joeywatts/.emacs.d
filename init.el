@@ -59,12 +59,21 @@
 (setq-default indent-tabs-mode t)
 (setq-default tab-width 4)
 
-;; Don't save backups over remote.
-;; Set backup directory to ~/.emacs.d/backups
-(setq backup-directory-alist `(("." . "~/.emacs.d/backups")))
-(setq backup-by-copying t)
+;; Save/restore window frame (position/size)
+(desktop-save-mode)
 
-;; Tramp default method to ssh (faster).
+;; JS mode
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js-mode))
+
+;; Backup directory
+(setq backup-by-copying t      ; don't clobber symlinks
+	  backup-directory-alist '(("." . "~/.saves"))    ; don't litter my fs tree
+	  delete-old-versions t
+	  kept-new-versions 6
+	  kept-old-versions 2
+	  version-control t)       ; use versioned backups
+
+;; Tramp default method to ssh.
 (setq tramp-default-method "ssh")
 
 ;; Refresh major mode. (sometimes php syntax highlighting screws up)
@@ -75,6 +84,12 @@ resets your previous major mode."
   (let ((mode (buffer-local-value 'major-mode (current-buffer))))
 	(funcall 'fundamental-mode)
 	(funcall mode)))
+
+;; Reload current file.
+(defun reload-current-file ()
+  "Reverts the current buffer, asking for confirmation only if it is modified"
+  (interactive)
+  (revert-buffer t (not (buffer-modified-p)) t))
 
 ;;------------------------------------------------------------------
 (custom-set-variables
@@ -102,6 +117,9 @@ resets your previous major mode."
   :config
   (load-theme 'atom-dark t))
 
+;; Bookmark+
+(use-package bookmark+
+  :ensure)
 
 ;; Turn on projectile
 (use-package projectile
@@ -199,21 +217,6 @@ resets your previous major mode."
 (use-package groovy-mode
   :config
   (add-to-list 'auto-mode-alist '("\\.gradle\\'" . groovy-mode)))
-
-;; Web Mode
-(use-package web-mode
-  :ensure
-  :config
-  (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.blade\\.php\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
-  (setq web-mode-enable-current-element-highlight t))
 
 ;; PHP mode
 (use-package php-mode
