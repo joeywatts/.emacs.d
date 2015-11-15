@@ -31,7 +31,6 @@
     (progn
       (scroll-bar-mode -1)  ;; disable scroll bars
       (set-frame-font "Inconsolata 14"))) ;; set font
-(set-face-attribute 'default nil :height 160)  ;; make the font more visually pleasing
 (setq mac-allow-anti-aliasing t)  ;; nice fonts in OS X
 (setq-default truncate-lines 1)  ;; no word wrap
 (setq-default line-spacing 4) ;; add line spacing
@@ -61,9 +60,6 @@
 (setq-default indent-tabs-mode t
 			  tab-width 4)
 
-;; Save/restore window frame (position/size)
-(desktop-save-mode)
-
 ;; JS mode
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js-mode))
 
@@ -85,9 +81,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(blink-cursor-interval 0.3)
+ '(bmkp-last-as-first-bookmark-file "~/.emacs.d/bookmarks")
  '(custom-safe-themes
    (quote
-    ("cd2a93d7b63aff07b3565c1c95e461cb880f0b00d8dd6cdd10fa8ece01ffcfdf" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "4f2ede02b3324c2f788f4e0bad77f7ebc1874eff7971d2a2c9b9724a50fb3f65" "1177fe4645eb8db34ee151ce45518e47cc4595c3e72c55dc07df03ab353ad132" "11636897679ca534f0dec6f5e3cb12f28bf217a527755f6b9e744bd240ed47e1" "96998f6f11ef9f551b427b8853d947a7857ea5a578c75aa9c4e7c73fe04d10b4" "9b59e147dbbde5e638ea1cde5ec0a358d5f269d27bd2b893a0947c4a867e14c1" "46fd293ff6e2f6b74a5edf1063c32f2a758ec24a5f63d13b07a20255c074d399" "afc220610bee26945b7c750b0cca03775a8b73c27fdca81a586a0a62d45bbce2" default)))
+	("cd2a93d7b63aff07b3565c1c95e461cb880f0b00d8dd6cdd10fa8ece01ffcfdf" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "4f2ede02b3324c2f788f4e0bad77f7ebc1874eff7971d2a2c9b9724a50fb3f65" "1177fe4645eb8db34ee151ce45518e47cc4595c3e72c55dc07df03ab353ad132" "11636897679ca534f0dec6f5e3cb12f28bf217a527755f6b9e744bd240ed47e1" "96998f6f11ef9f551b427b8853d947a7857ea5a578c75aa9c4e7c73fe04d10b4" "9b59e147dbbde5e638ea1cde5ec0a358d5f269d27bd2b893a0947c4a867e14c1" "46fd293ff6e2f6b74a5edf1063c32f2a758ec24a5f63d13b07a20255c074d399" "afc220610bee26945b7c750b0cca03775a8b73c27fdca81a586a0a62d45bbce2" default)))
  '(frame-background-mode (quote dark)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -116,27 +113,25 @@
   (projectile-global-mode)
   :init)
 
-;; Turn on ido and smex
-(ido-mode 1)
-(ido-everywhere 1)
-(use-package flx-ido
+;; Helm
+(use-package helm
   :ensure
   :config
-  (flx-ido-mode 1))
-(use-package ido-ubiquitous
-  :ensure
-  :config
-  (ido-ubiquitous-mode 1))
-(use-package ido-vertical-mode
-  :ensure
-  :config
-  (ido-vertical-mode 1))
-(use-package smex
+  (require 'helm-config)
+  (helm-mode 1))
+
+;; Helm CMD-T
+(use-package helm-cmd-t
   :ensure
   :bind
-  ("M-x" . smex)
-  ("M-X" . smex-major-mode-commands)
-  ("C-c C-c M-x" . execute-extended-command))
+  ("M-t" . helm-cmd-t))
+
+;; Helm Projectile
+(use-package helm-projectile
+  :ensure
+  :config
+  (helm-projectile-on)
+  :init)
 
 ;; Magit
 (use-package magit
