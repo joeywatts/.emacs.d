@@ -44,6 +44,9 @@
 (global-set-key (kbd "C-s-<left>") 'enlarge-window-horizontally)
 (global-set-key (kbd "C-s-<right>") 'shrink-window-horizontally)
 
+;; Bookmark Shortcuts
+(global-set-key (kbd "s-`") `bookmark-jump)
+
 ;; Add /usr/local/bin to exec-path
 (setq exec-path (append exec-path '("/usr/local/bin")))
 
@@ -96,10 +99,10 @@
 ;; Packages
 ;;------------------------------------------------------------------
 ;; Color theme
-(use-package atom-dark-theme
+(use-package gruvbox-theme
   :ensure
   :config
-  (load-theme 'atom-dark t))
+  (load-theme 'gruvbox t))
 
 ;; Bookmark+
 (use-package bookmark+
@@ -172,7 +175,7 @@
   :ensure
   :config
   (setq sml/no-config-load-theme t)
-  (setq sml/theme 'respectful)
+  (setq sml/theme 'dark)
   (add-hook 'after-init-hook 'sml/setup))
 
 ;; Gradle files => Groovy syntax highlighting
