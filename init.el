@@ -136,6 +136,10 @@
   (helm-projectile-on)
   :init)
 
+;; Silver Searcher (ag) for Helm
+(use-package helm-ag
+  :ensure)
+
 ;; Magit
 (use-package magit
   :ensure
