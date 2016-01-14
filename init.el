@@ -62,9 +62,19 @@
 ;; Fix tabs
 (setq-default indent-tabs-mode t
 			  tab-width 4)
+(add-hook 'after-change-major-mode-hook
+          '(lambda ()
+             (setq-default indent-tabs-mode nil)
+             (setq c-basic-indent 4)
+             (setq tab-width 4)))
 
 ;; JS mode
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js-mode))
+
+;; Smali mode
+(add-to-list 'load-path "~/.emacs.d/Emacs-Smali")
+(autoload 'smali-mode "smali-mode" "Major mode for editing and viewing smali issues" t)
+(add-to-list 'auto-mode-alist '(".smali$" . smali-mode))
 
 ;; Backup directory
 (setq backup-by-copying t      ; don't clobber symlinks
@@ -99,10 +109,14 @@
 ;; Packages
 ;;------------------------------------------------------------------
 ;; Color theme
-(use-package gruvbox-theme
+(use-package dracula-theme
   :ensure
   :config
-  (load-theme 'gruvbox t))
+  (load-theme 'dracula t))
+;; (use-package gruvbox-theme
+;;   :ensure
+;;   :config
+;;   (load-theme 'gruvbox t))
 
 ;; Bookmark+
 (use-package bookmark+
@@ -167,6 +181,13 @@
   ;; Add sbt, scalac to PATH
   (add-hook 'scala-mode-hook 'ensime-scala-mode-hook))
 
+;; Markdown mode
+(use-package markdown-mode
+  :ensure
+  :config
+  (setq markdown-command "pandoc -c file:///Users/joeywatts/.emacs.d/github-pandoc.css --from markdown_github -t html5 --mathjax --highlight-style pygments --standalone"))
+
+
 ;; Enable line numbers globally.
 (use-package linum
   :config
@@ -179,7 +200,7 @@
   :ensure
   :config
   (setq sml/no-config-load-theme t)
-  (setq sml/theme 'dark)
+  (setq sml/theme 'respectful)
   (add-hook 'after-init-hook 'sml/setup))
 
 ;; Gradle files => Groovy syntax highlighting
@@ -200,6 +221,18 @@
 	  (setq c-basic-indent my-tab-width)
 	  (set (make-local-variable 'tab-stop-list)
 		   (number-sequence my-tab-width 200 my-tab-width)))))
+
+;; LESS mode
+(use-package less-css-mode
+  :ensure)
+
+;; Company Mode (autocomplete)
+(use-package company
+  :ensure
+  :config
+  (add-hook 'after-init-hook 'global-company-mode)
+  (global-set-key (kbd "C-c c") 'company-complete)
+  (setq-default company-idle-delay 0))
 
 ;; Geben PHP Debugger
 ;;(use-package geben

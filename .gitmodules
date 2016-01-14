@@ -1,0 +1,3 @@
+[submodule "Emacs-Smali"]
+	path = Emacs-Smali
+	url = https://github.com/strazzere/Emacs-Smali
